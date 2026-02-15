@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carregando…</title>
+  <meta name="description" content="Site roxo e preto com vitrine de apps." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="#top" id="top">
+      <img class="brand__logo" id="brandLogo" alt="Logo" />
+      <div class="brand__text">
+        <div class="brand__name" id="brandName">Seu Site</div>
+        <div class="brand__tag" id="brandTag">Vitrine de apps</div>
+      </div>
+    </a>
+
+    <nav class="nav">
+      <a href="#apps">Apps</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#contato">Contato</a>
+      <a class="chip" href="admin.html" title="Painel para editar tudo">Admin</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero__copy">
+        <h1 id="heroTitle">Seu espaço roxo & preto</h1>
+        <p class="muted" id="heroSubtitle">
+          Coloque seus apps aqui e venda enviando o link depois do pagamento (via WhatsApp ou checkout).
+        </p>
+
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="#apps">Ver apps</a>
+          <a class="btn btn--ghost" href="#contato">Falar comigo</a>
+        </div>
+
+        <div class="hero__badges">
+          <span class="badge">Tema roxo/preto</span>
+          <span class="badge">Editável (logo, texto, cores)</span>
+          <span class="badge">Botão de compra</span>
+        </div>
+      </div>
+
+      <div class="hero__card">
+        <div class="card card--glass">
+          <div class="card__header">
+            <div class="dot dot--1"></div>
+            <div class="dot dot--2"></div>
+            <div class="dot dot--3"></div>
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Dica rápida</h3>
+            <p class="muted" id="tipText">
+              Abra <b>Admin</b> para trocar logo, cores e cadastrar seus apps.
+            </p>
+            <div class="small muted" id="tipFoot">⚡ Tudo salvo no navegador (localStorage).</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="apps" class="section">
+      <div class="section__head">
+        <h2>Apps em destaque</h2>
+        <p class="muted" id="appsIntro">Clique em comprar para ir pro checkout ou abrir WhatsApp.</p>
+      </div>
+
+      <div class="grid" id="appsGrid"></div>
+    </section>
+
+    <section id="sobre" class="section">
+      <div class="section__head">
+        <h2>Sobre</h2>
+        <p class="muted" id="aboutText">
+          Escreva aqui sobre você, sua equipe, seus produtos e como funciona a entrega do link do app.
+        </p>
+      </div>
+
+      <div class="split">
+        <div class="panel">
+          <h3>Como funciona a venda</h3>
+          <ul class="list">
+            <li>Você cadastra o app no painel (nome, preço, descrição, link).</li>
+            <li>No botão <b>Comprar</b> você escolhe: <b>Checkout</b> ou <b>WhatsApp</b>.</li>
+            <li>Depois do pagamento confirmado, você envia o link do app para o cliente.</li>
+          </ul>
+          <p class="small muted">
+            Para entrega automática (liberar o link sozinho), você vai precisar de um checkout com entrega digital
+            (Hotmart/Gumroad/etc.) ou um backend (ex.: Firebase).
+          </p>
+        </div>
+
+        <div class="panel">
+          <h3>Personalização</h3>
+          <ul class="list">
+            <li>Trocar logo e nome do site</li>
+            <li>Mudar cores do tema (roxo/preto + neon)</li>
+            <li>Cadastrar e editar seus apps</li>
+            <li>Exportar/importar configuração</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="contato" class="section">
+      <div class="section__head">
+        <h2>Contato</h2>
+        <p class="muted" id="contactText">
+          Quer comprar ou tirar dúvida? Me chama no WhatsApp.
+        </p>
+      </div>
+
+      <div class="contact">
+        <a class="btn btn--primary" id="whatsBtn" href="#" target="_blank" rel="noopener">WhatsApp</a>
+        <a class="btn btn--ghost" id="igBtn" href="#" target="_blank" rel="noopener">Instagram</a>
+        <a class="btn btn--ghost" id="ytBtn" href="#" target="_blank" rel="noopener">YouTube</a>
+      </div>
+      <div class="small muted" id="contactFoot"></div>
+    </section>
+
+    <footer class="footer">
+      <div>© <span id="year"></span> <span id="footerName">Seu Site</span>. Todos os direitos reservados.</div>
+      <div class="small muted">Feito com tema roxo e preto.</div>
+    </footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="shared.js"></script>
+  <script src="site.js"></script>
+</body>
+</html>

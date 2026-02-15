@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin • Site Roxo & Preto</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="admin">
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <img class="brand__logo" id="brandLogo" alt="Logo" />
+      <div class="brand__text">
+        <div class="brand__name" id="brandName">Admin</div>
+        <div class="brand__tag">Edite logo, textos, cores e seus apps</div>
+      </div>
+    </a>
+
+    <nav class="nav">
+      <a class="chip" href="index.html">Ver site</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <div class="section__head">
+        <h2>⚠️ Aviso importante</h2>
+        <p class="muted">
+          Este painel funciona em <b>site estático</b> e salva no <b>navegador</b> (localStorage). Não é seguro como login real.
+          Para segurança de verdade, proteja a pasta/admin com senha no seu host (Netlify/Vercel/Apache) ou use backend.
+        </p>
+      </div>
+
+      <div class="panel">
+        <div class="row">
+          <div>
+            <h3>Senha do painel (opcional)</h3>
+            <p class="small muted">Serve só para não deixar aberto para qualquer pessoa, mas não é criptografia forte.</p>
+          </div>
+        </div>
+
+        <div class="form">
+          <label>
+            Senha atual (se tiver):
+            <input type="password" id="adminPass" placeholder="••••••••" autocomplete="current-password" />
+          </label>
+          <label>
+            Nova senha:
+            <input type="password" id="newPass" placeholder="defina uma senha" autocomplete="new-password" />
+          </label>
+          <button class="btn btn--ghost" id="setPassBtn">Salvar senha</button>
+          <div class="small muted" id="passHint"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section__head">
+        <h2>Branding & Tema</h2>
+        <p class="muted">Troque logo, nome, textos e cores.</p>
+      </div>
+
+      <div class="split">
+        <div class="panel">
+          <h3>Logo</h3>
+          <div class="logoRow">
+            <img class="logoPreview" id="logoPreview" alt="Prévia do logo" />
+            <div class="form" style="flex:1;">
+              <label>
+                Enviar imagem (PNG/JPG):
+                <input type="file" id="logoInput" accept="image/*" />
+              </label>
+              <button class="btn btn--ghost" id="clearLogoBtn">Remover logo</button>
+              <div class="small muted">Dica: use logo quadrado (ex.: 512×512).</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Texto do site</h3>
+          <div class="form">
+            <label>Nome do site
+              <input id="siteName" placeholder="Ex.: OS RAROS DO CBL" />
+            </label>
+            <label>Slogan/Tag
+              <input id="siteTag" placeholder="Ex.: Loja de apps e novidades" />
+            </label>
+            <label>Título do Hero
+              <input id="heroTitle" placeholder="Ex.: Bem-vindo!" />
+            </label>
+            <label>Subtítulo do Hero
+              <textarea id="heroSubtitle" rows="3"></textarea>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="split">
+        <div class="panel">
+          <h3>Cores (tema roxo/preto)</h3>
+          <div class="form">
+            <label>Cor principal (roxo)
+              <input type="color" id="primaryColor" />
+            </label>
+            <label>Cor neon (destaque)
+              <input type="color" id="accentColor" />
+            </label>
+            <label>Cor de fundo
+              <input type="color" id="bgColor" />
+            </label>
+            <label>Texto (claro)
+              <input type="color" id="textColor" />
+            </label>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Seções</h3>
+          <div class="form">
+            <label>Texto “Apps”
+              <input id="appsIntro" />
+            </label>
+            <label>Sobre
+              <textarea id="aboutText" rows="4"></textarea>
+            </label>
+            <label>Contato (texto)
+              <textarea id="contactText" rows="3"></textarea>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Links de contato</h3>
+        <div class="form">
+          <label>WhatsApp (somente números com DDI, ex.: 5591999999999)
+            <input id="whatsappNumber" placeholder="55..." inputmode="numeric" />
+          </label>
+          <label>Mensagem padrão do WhatsApp
+            <input id="whatsappMsg" placeholder="Olá! Quero comprar..." />
+          </label>
+          <label>Instagram (URL completa)
+            <input id="instagramUrl" placeholder="https://instagram.com/seuperfil" />
+          </label>
+          <label>YouTube (URL completa)
+            <input id="youtubeUrl" placeholder="https://youtube.com/@seucanal" />
+          </label>
+        </div>
+      </div>
+
+      <div class="row row--actions">
+        <button class="btn btn--primary" id="saveBrandingBtn">Salvar tudo</button>
+        <button class="btn btn--ghost" id="resetBtn">Resetar (voltar padrão)</button>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section__head">
+        <h2>Apps / Produtos</h2>
+        <p class="muted">Cadastre seus apps com link e escolha como o botão Comprar funciona.</p>
+      </div>
+
+      <div class="panel">
+        <div class="row row--actions">
+          <button class="btn btn--primary" id="addProductBtn">+ Adicionar app</button>
+          <button class="btn btn--ghost" id="exportBtn">Exportar JSON</button>
+          <label class="btn btn--ghost fileBtn">
+            Importar JSON
+            <input type="file" id="importInput" accept="application/json" hidden />
+          </label>
+        </div>
+
+        <div class="tableWrap">
+          <table class="table" id="productsTable">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Preço</th>
+                <th>Modo do botão</th>
+                <th>Link do app</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="small muted">
+          • <b>Checkout</b>: abre seu link de pagamento (Mercado Pago/Hotmart/Gumroad etc.)<br/>
+          • <b>WhatsApp</b>: abre uma mensagem pra você, com o produto e o link do app para você enviar depois
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="small muted">Depois de salvar, abra <b>Ver site</b> para conferir.</div>
+    </footer>
+  </main>
+
+  <!-- Modal de produto -->
+  <dialog class="dialog" id="productDialog">
+    <form method="dialog" class="dialog__card" id="productForm">
+      <h3 id="dlgTitle">Novo app</h3>
+
+      <div class="form">
+        <label>Nome do app
+          <input id="pName" required />
+        </label>
+
+        <label>Descrição
+          <textarea id="pDesc" rows="3"></textarea>
+        </label>
+
+        <label>Preço (ex.: 19.90)
+          <input id="pPrice" inputmode="decimal" placeholder="0.00" />
+        </label>
+
+        <label>Link do app (o que você vai enviar pro cliente)
+          <input id="pAppLink" placeholder="https://..." />
+        </label>
+
+        <label>Modo do botão Comprar
+          <select id="pMode">
+            <option value="whatsapp">WhatsApp (você vende e envia o link depois)</option>
+            <option value="checkout">Checkout (abre link de pagamento)</option>
+          </select>
+        </label>
+
+        <label>Link do checkout (se usar modo Checkout)
+          <input id="pCheckout" placeholder="https://seu-checkout.com/..." />
+        </label>
+
+        <label>Texto do botão
+          <input id="pBtnText" placeholder="Comprar agora" />
+        </label>
+      </div>
+
+      <div class="row row--actions">
+        <button class="btn btn--primary" id="saveProductBtn" value="save">Salvar</button>
+        <button class="btn btn--ghost" value="cancel">Cancelar</button>
+      </div>
+      <div class="small muted">Dica: se o appLink estiver vazio, o WhatsApp vai só pedir a compra sem link.</div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="shared.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
