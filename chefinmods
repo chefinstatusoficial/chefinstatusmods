@@ -1,0 +1,1318 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin • Site Roxo & Preto</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="admin">
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <img class="brand__logo" id="brandLogo" alt="Logo" />
+      <div class="brand__text">
+        <div class="brand__name" id="brandName">Admin</div>
+        <div class="brand__tag">Edite logo, textos, cores e seus apps</div>
+      </div>
+    </a>
+
+    <nav class="nav">
+      <a class="chip" href="index.html">Ver site</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <div class="section__head">
+        <h2>⚠️ Aviso importante</h2>
+        <p class="muted">
+          Este painel funciona em <b>site estático</b> e salva no <b>navegador</b> (localStorage). Não é seguro como login real.
+          Para segurança de verdade, proteja a pasta/admin com senha no seu host (Netlify/Vercel/Apache) ou use backend.
+        </p>
+      </div>
+
+      <div class="panel">
+        <div class="row">
+          <div>
+            <h3>Senha do painel (opcional)</h3>
+            <p class="small muted">Serve só para não deixar aberto para qualquer pessoa, mas não é criptografia forte.</p>
+          </div>
+        </div>
+
+        <div class="form">
+          <label>
+            Senha atual (se tiver):
+            <input type="password" id="adminPass" placeholder="••••••••" autocomplete="current-password" />
+          </label>
+          <label>
+            Nova senha:
+            <input type="password" id="newPass" placeholder="defina uma senha" autocomplete="new-password" />
+          </label>
+          <button class="btn btn--ghost" id="setPassBtn">Salvar senha</button>
+          <div class="small muted" id="passHint"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section__head">
+        <h2>Branding & Tema</h2>
+        <p class="muted">Troque logo, nome, textos e cores.</p>
+      </div>
+
+      <div class="split">
+        <div class="panel">
+          <h3>Logo</h3>
+          <div class="logoRow">
+            <img class="logoPreview" id="logoPreview" alt="Prévia do logo" />
+            <div class="form" style="flex:1;">
+              <label>
+                Enviar imagem (PNG/JPG):
+                <input type="file" id="logoInput" accept="image/*" />
+              </label>
+              <button class="btn btn--ghost" id="clearLogoBtn">Remover logo</button>
+              <div class="small muted">Dica: use logo quadrado (ex.: 512×512).</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Texto do site</h3>
+          <div class="form">
+            <label>Nome do site
+              <input id="siteName" placeholder="Ex.: OS RAROS DO CBL" />
+            </label>
+            <label>Slogan/Tag
+              <input id="siteTag" placeholder="Ex.: Loja de apps e novidades" />
+            </label>
+            <label>Título do Hero
+              <input id="heroTitle" placeholder="Ex.: Bem-vindo!" />
+            </label>
+            <label>Subtítulo do Hero
+              <textarea id="heroSubtitle" rows="3"></textarea>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="split">
+        <div class="panel">
+          <h3>Cores (tema roxo/preto)</h3>
+          <div class="form">
+            <label>Cor principal (roxo)
+              <input type="color" id="primaryColor" />
+            </label>
+            <label>Cor neon (destaque)
+              <input type="color" id="accentColor" />
+            </label>
+            <label>Cor de fundo
+              <input type="color" id="bgColor" />
+            </label>
+            <label>Texto (claro)
+              <input type="color" id="textColor" />
+            </label>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Seções</h3>
+          <div class="form">
+            <label>Texto “Apps”
+              <input id="appsIntro" />
+            </label>
+            <label>Sobre
+              <textarea id="aboutText" rows="4"></textarea>
+            </label>
+            <label>Contato (texto)
+              <textarea id="contactText" rows="3"></textarea>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Links de contato</h3>
+        <div class="form">
+          <label>WhatsApp (somente números com DDI, ex.: 5591999999999)
+            <input id="whatsappNumber" placeholder="55..." inputmode="numeric" />
+          </label>
+          <label>Mensagem padrão do WhatsApp
+            <input id="whatsappMsg" placeholder="Olá! Quero comprar..." />
+          </label>
+          <label>Instagram (URL completa)
+            <input id="instagramUrl" placeholder="https://instagram.com/seuperfil" />
+          </label>
+          <label>YouTube (URL completa)
+            <input id="youtubeUrl" placeholder="https://youtube.com/@seucanal" />
+          </label>
+        </div>
+      </div>
+
+      <div class="row row--actions">
+        <button class="btn btn--primary" id="saveBrandingBtn">Salvar tudo</button>
+        <button class="btn btn--ghost" id="resetBtn">Resetar (voltar padrão)</button>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section__head">
+        <h2>Apps / Produtos</h2>
+        <p class="muted">Cadastre seus apps com link e escolha como o botão Comprar funciona.</p>
+      </div>
+
+      <div class="panel">
+        <div class="row row--actions">
+          <button class="btn btn--primary" id="addProductBtn">+ Adicionar app</button>
+          <button class="btn btn--ghost" id="exportBtn">Exportar JSON</button>
+          <label class="btn btn--ghost fileBtn">
+            Importar JSON
+            <input type="file" id="importInput" accept="application/json" hidden />
+          </label>
+        </div>
+
+        <div class="tableWrap">
+          <table class="table" id="productsTable">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Preço</th>
+                <th>Modo do botão</th>
+                <th>Link do app</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="small muted">
+          • <b>Checkout</b>: abre seu link de pagamento (Mercado Pago/Hotmart/Gumroad etc.)<br/>
+          • <b>WhatsApp</b>: abre uma mensagem pra você, com o produto e o link do app para você enviar depois
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="small muted">Depois de salvar, abra <b>Ver site</b> para conferir.</div>
+    </footer>
+  </main>
+
+  <!-- Modal de produto -->
+  <dialog class="dialog" id="productDialog">
+    <form method="dialog" class="dialog__card" id="productForm">
+      <h3 id="dlgTitle">Novo app</h3>
+
+      <div class="form">
+        <label>Nome do app
+          <input id="pName" required />
+        </label>
+
+        <label>Descrição
+          <textarea id="pDesc" rows="3"></textarea>
+        </label>
+
+        <label>Preço (ex.: 19.90)
+          <input id="pPrice" inputmode="decimal" placeholder="0.00" />
+        </label>
+
+        <label>Link do app (o que você vai enviar pro cliente)
+          <input id="pAppLink" placeholder="https://..." />
+        </label>
+
+        <label>Modo do botão Comprar
+          <select id="pMode">
+            <option value="whatsapp">WhatsApp (você vende e envia o link depois)</option>
+            <option value="checkout">Checkout (abre link de pagamento)</option>
+          </select>
+        </label>
+
+        <label>Link do checkout (se usar modo Checkout)
+          <input id="pCheckout" placeholder="https://seu-checkout.com/..." />
+        </label>
+
+        <label>Texto do botão
+          <input id="pBtnText" placeholder="Comprar agora" />
+        </label>
+      </div>
+
+      <div class="row row--actions">
+        <button class="btn btn--primary" id="saveProductBtn" value="save">Salvar</button>
+        <button class="btn btn--ghost" value="cancel">Cancelar</button>
+      </div>
+      <div class="small muted">Dica: se o appLink estiver vazio, o WhatsApp vai só pedir a compra sem link.</div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="shared.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
+
+// admin.js — painel para editar tudo
+(async function(){
+  let cfg = loadConfig();
+  applyTheme(cfg);
+  setBrandHeader(cfg);
+
+  // render do logo preview
+  const logoPreview = document.getElementById("logoPreview");
+  const logoInput = document.getElementById("logoInput");
+  const clearLogoBtn = document.getElementById("clearLogoBtn");
+
+  // Campos branding
+  const fields = {
+    siteName: "branding.siteName",
+    siteTag: "branding.siteTag",
+    heroTitle: "branding.heroTitle",
+    heroSubtitle: "branding.heroSubtitle",
+    appsIntro: "branding.appsIntro",
+    aboutText: "branding.aboutText",
+    contactText: "branding.contactText",
+    primaryColor: "theme.primary",
+    accentColor: "theme.accent",
+    bgColor: "theme.bg",
+    textColor: "theme.text",
+    whatsappNumber: "contact.whatsappNumber",
+    whatsappMsg: "contact.whatsappMsg",
+    instagramUrl: "contact.instagramUrl",
+    youtubeUrl: "contact.youtubeUrl",
+  };
+
+  function getByPath(obj, path){
+    return path.split(".").reduce((o,k)=> (o && o[k] !== undefined ? o[k] : undefined), obj);
+  }
+  function setByPath(obj, path, val){
+    const parts = path.split(".");
+    let cur = obj;
+    for(let i=0;i<parts.length-1;i++){
+      const k = parts[i];
+      cur[k] = cur[k] ?? {};
+      cur = cur[k];
+    }
+    cur[parts.at(-1)] = val;
+  }
+
+  // Preenche campos
+  for(const [id, path] of Object.entries(fields)){
+    const el = document.getElementById(id);
+    if(!el) continue;
+    const v = getByPath(cfg, path);
+    if(el.type === "color"){
+      el.value = v || "#000000";
+    }else{
+      el.value = v ?? "";
+    }
+  }
+
+  if(logoPreview){
+    if(cfg.branding.logoDataUrl){
+      logoPreview.src = cfg.branding.logoDataUrl;
+    }else{
+      logoPreview.removeAttribute("src");
+    }
+  }
+
+  // Upload logo
+  if(logoInput){
+    logoInput.addEventListener("change", async (e)=>{
+      const file = e.target.files?.[0];
+      if(!file) return;
+      if(file.size > 2.5 * 1024 * 1024){
+        toast("Imagem muito grande. Use até 2,5MB.");
+        logoInput.value = "";
+        return;
+      }
+      const dataUrl = await fileToDataUrl(file);
+      cfg.branding.logoDataUrl = dataUrl;
+      saveConfig(cfg);
+      applyTheme(cfg);
+      setBrandHeader(cfg);
+      if(logoPreview) logoPreview.src = dataUrl;
+      toast("Logo atualizado!");
+    });
+  }
+
+  if(clearLogoBtn){
+    clearLogoBtn.addEventListener("click", ()=>{
+      cfg.branding.logoDataUrl = "";
+      saveConfig(cfg);
+      setBrandHeader(cfg);
+      if(logoPreview) logoPreview.removeAttribute("src");
+      toast("Logo removido.");
+    });
+  }
+
+  // Salvar branding
+  const saveBrandingBtn = document.getElementById("saveBrandingBtn");
+  if(saveBrandingBtn){
+    saveBrandingBtn.addEventListener("click", ()=>{
+      for(const [id, path] of Object.entries(fields)){
+        const el = document.getElementById(id);
+        if(!el) continue;
+        setByPath(cfg, path, el.value);
+      }
+      saveConfig(cfg);
+      applyTheme(cfg);
+      setBrandHeader(cfg);
+      toast("Configurações salvas!");
+    });
+  }
+
+  // Reset
+  const resetBtn = document.getElementById("resetBtn");
+  if(resetBtn){
+    resetBtn.addEventListener("click", ()=>{
+      if(!confirm("Resetar tudo para o padrão?")) return;
+      resetConfig();
+      cfg = loadConfig();
+      location.reload();
+    });
+  }
+
+  // Senha
+  const passHint = document.getElementById("passHint");
+  const setPassBtn = document.getElementById("setPassBtn");
+  const adminPass = document.getElementById("adminPass");
+  const newPass = document.getElementById("newPass");
+
+  if(passHint){
+    passHint.textContent = cfg.admin.passwordHash ? "Senha configurada." : "Sem senha configurada.";
+  }
+
+  if(setPassBtn){
+    setPassBtn.addEventListener("click", async ()=>{
+      const current = adminPass?.value || "";
+      const next = newPass?.value || "";
+
+      if(cfg.admin.passwordHash){
+        const curHash = await sha256(current);
+        if(curHash !== cfg.admin.passwordHash){
+          toast("Senha atual incorreta.");
+          return;
+        }
+      }
+      if(!next || next.length < 4){
+        toast("A nova senha precisa ter pelo menos 4 caracteres.");
+        return;
+      }
+      cfg.admin.passwordHash = await sha256(next);
+      saveConfig(cfg);
+      adminPass.value = "";
+      newPass.value = "";
+      passHint.textContent = "Senha atualizada.";
+      toast("Senha salva!");
+    });
+  }
+
+  // Proteção simples: se tem senha, pede no carregamento
+  if(cfg.admin.passwordHash){
+    const typed = prompt("Digite a senha do Admin:");
+    if(!typed){
+      location.href = "index.html";
+      return;
+    }
+    const typedHash = await sha256(typed);
+    if(typedHash !== cfg.admin.passwordHash){
+      alert("Senha incorreta.");
+      location.href = "index.html";
+      return;
+    }
+  }
+
+  // Produtos
+  const table = document.getElementById("productsTable");
+  const addProductBtn = document.getElementById("addProductBtn");
+  const dlg = document.getElementById("productDialog");
+  const form = document.getElementById("productForm");
+  const dlgTitle = document.getElementById("dlgTitle");
+
+  const pName = document.getElementById("pName");
+  const pDesc = document.getElementById("pDesc");
+  const pPrice = document.getElementById("pPrice");
+  const pAppLink = document.getElementById("pAppLink");
+  const pMode = document.getElementById("pMode");
+  const pCheckout = document.getElementById("pCheckout");
+  const pBtnText = document.getElementById("pBtnText");
+
+  let editingId = null;
+
+  function renderTable(){
+    const tbody = table?.querySelector("tbody");
+    if(!tbody) return;
+    tbody.innerHTML = "";
+
+    const products = Array.isArray(cfg.products) ? cfg.products : [];
+    if(products.length === 0){
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td colspan="5" class="muted">Nenhum app cadastrado.</td>`;
+      tbody.appendChild(tr);
+      return;
+    }
+
+    for(const p of products){
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><b>${escapeHtml(p.name || "")}</b><div class="small muted">${escapeHtml((p.desc||"").slice(0,70))}${(p.desc||"").length>70?"…":""}</div></td>
+        <td>${p.price ? escapeHtml(p.price) : ""}</td>
+        <td>${p.mode === "checkout" ? "Checkout" : "WhatsApp"}</td>
+        <td class="small muted">${escapeHtml((p.appLink||"").slice(0,55))}${(p.appLink||"").length>55?"…":""}</td>
+        <td>
+          <div class="actions">
+            <button class="iconBtn" data-act="edit" data-id="${p.id}">Editar</button>
+            <button class="iconBtn" data-act="del" data-id="${p.id}">Excluir</button>
+          </div>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    }
+  }
+
+  function openDialog(p){
+    editingId = p?.id ?? null;
+    dlgTitle.textContent = editingId ? "Editar app" : "Novo app";
+    pName.value = p?.name ?? "";
+    pDesc.value = p?.desc ?? "";
+    pPrice.value = p?.price ?? "";
+    pAppLink.value = p?.appLink ?? "";
+    pMode.value = p?.mode ?? "whatsapp";
+    pCheckout.value = p?.checkout ?? "";
+    pBtnText.value = p?.buttonText ?? "Comprar";
+    dlg.showModal();
+  }
+
+  addProductBtn?.addEventListener("click", ()=> openDialog(null));
+
+  table?.addEventListener("click", (e)=>{
+    const btn = e.target.closest("button[data-act]");
+    if(!btn) return;
+    const act = btn.dataset.act;
+    const id = btn.dataset.id;
+    const products = Array.isArray(cfg.products) ? cfg.products : [];
+    const p = products.find(x=> x.id === id);
+
+    if(act === "edit" && p){
+      openDialog(p);
+    }else if(act === "del" && p){
+      if(!confirm(`Excluir "${p.name}"?`)) return;
+      cfg.products = products.filter(x=> x.id !== id);
+      saveConfig(cfg);
+      renderTable();
+      toast("App excluído.");
+    }
+  });
+
+  form?.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    const products = Array.isArray(cfg.products) ? cfg.products : [];
+
+    const obj = {
+      id: editingId || (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())),
+      name: pName.value.trim(),
+      desc: pDesc.value.trim(),
+      price: pPrice.value.trim(),
+      appLink: pAppLink.value.trim(),
+      mode: pMode.value,
+      checkout: pCheckout.value.trim(),
+      buttonText: pBtnText.value.trim() || "Comprar"
+    };
+
+    if(!obj.name){
+      toast("Digite o nome do app.");
+      return;
+    }
+
+    if(obj.mode === "checkout" && !obj.checkout){
+      toast("Modo Checkout precisa do link do checkout.");
+      return;
+    }
+
+    const idx = products.findIndex(x=> x.id === obj.id);
+    if(idx >= 0) products[idx] = obj;
+    else products.unshift(obj);
+
+    cfg.products = products;
+    saveConfig(cfg);
+    renderTable();
+    dlg.close();
+    toast("App salvo!");
+  });
+
+  // Export / Import
+  const exportBtn = document.getElementById("exportBtn");
+  const importInput = document.getElementById("importInput");
+
+  exportBtn?.addEventListener("click", ()=>{
+    const blob = new Blob([JSON.stringify(cfg, null, 2)], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "site-config.json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    toast("Exportado!");
+  });
+
+  importInput?.addEventListener("change", async (e)=>{
+    const file = e.target.files?.[0];
+    if(!file) return;
+    try{
+      const text = await file.text();
+      const imported = JSON.parse(text);
+      cfg = deepMerge(structuredClone(DEFAULT_CONFIG), imported);
+      saveConfig(cfg);
+      toast("Importado! Recarregando…");
+      setTimeout(()=> location.reload(), 600);
+    }catch{
+      toast("JSON inválido.");
+    }finally{
+      importInput.value = "";
+    }
+  });
+
+  renderTable();
+
+  async function fileToDataUrl(file){
+    return await new Promise((resolve, reject)=>{
+      const reader = new FileReader();
+      reader.onload = ()=> resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+})();
+
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carregando…</title>
+  <meta name="description" content="Site roxo e preto com vitrine de apps." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="#top" id="top">
+      <img class="brand__logo" id="brandLogo" alt="Logo" />
+      <div class="brand__text">
+        <div class="brand__name" id="brandName">Seu Site</div>
+        <div class="brand__tag" id="brandTag">Vitrine de apps</div>
+      </div>
+    </a>
+
+    <nav class="nav">
+      <a href="#apps">Apps</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#contato">Contato</a>
+      <a class="chip" href="admin.html" title="Painel para editar tudo">Admin</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero__copy">
+        <h1 id="heroTitle">Seu espaço roxo & preto</h1>
+        <p class="muted" id="heroSubtitle">
+          Coloque seus apps aqui e venda enviando o link depois do pagamento (via WhatsApp ou checkout).
+        </p>
+
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="#apps">Ver apps</a>
+          <a class="btn btn--ghost" href="#contato">Falar comigo</a>
+        </div>
+
+        <div class="hero__badges">
+          <span class="badge">Tema roxo/preto</span>
+          <span class="badge">Editável (logo, texto, cores)</span>
+          <span class="badge">Botão de compra</span>
+        </div>
+      </div>
+
+      <div class="hero__card">
+        <div class="card card--glass">
+          <div class="card__header">
+            <div class="dot dot--1"></div>
+            <div class="dot dot--2"></div>
+            <div class="dot dot--3"></div>
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Dica rápida</h3>
+            <p class="muted" id="tipText">
+              Abra <b>Admin</b> para trocar logo, cores e cadastrar seus apps.
+            </p>
+            <div class="small muted" id="tipFoot">⚡ Tudo salvo no navegador (localStorage).</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="apps" class="section">
+      <div class="section__head">
+        <h2>Apps em destaque</h2>
+        <p class="muted" id="appsIntro">Clique em comprar para ir pro checkout ou abrir WhatsApp.</p>
+      </div>
+
+      <div class="grid" id="appsGrid"></div>
+    </section>
+
+    <section id="sobre" class="section">
+      <div class="section__head">
+        <h2>Sobre</h2>
+        <p class="muted" id="aboutText">
+          Escreva aqui sobre você, sua equipe, seus produtos e como funciona a entrega do link do app.
+        </p>
+      </div>
+
+      <div class="split">
+        <div class="panel">
+          <h3>Como funciona a venda</h3>
+          <ul class="list">
+            <li>Você cadastra o app no painel (nome, preço, descrição, link).</li>
+            <li>No botão <b>Comprar</b> você escolhe: <b>Checkout</b> ou <b>WhatsApp</b>.</li>
+            <li>Depois do pagamento confirmado, você envia o link do app para o cliente.</li>
+          </ul>
+          <p class="small muted">
+            Para entrega automática (liberar o link sozinho), você vai precisar de um checkout com entrega digital
+            (Hotmart/Gumroad/etc.) ou um backend (ex.: Firebase).
+          </p>
+        </div>
+
+        <div class="panel">
+          <h3>Personalização</h3>
+          <ul class="list">
+            <li>Trocar logo e nome do site</li>
+            <li>Mudar cores do tema (roxo/preto + neon)</li>
+            <li>Cadastrar e editar seus apps</li>
+            <li>Exportar/importar configuração</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="contato" class="section">
+      <div class="section__head">
+        <h2>Contato</h2>
+        <p class="muted" id="contactText">
+          Quer comprar ou tirar dúvida? Me chama no WhatsApp.
+        </p>
+      </div>
+
+      <div class="contact">
+        <a class="btn btn--primary" id="whatsBtn" href="#" target="_blank" rel="noopener">WhatsApp</a>
+        <a class="btn btn--ghost" id="igBtn" href="#" target="_blank" rel="noopener">Instagram</a>
+        <a class="btn btn--ghost" id="ytBtn" href="#" target="_blank" rel="noopener">YouTube</a>
+      </div>
+      <div class="small muted" id="contactFoot"></div>
+    </section>
+
+    <footer class="footer">
+      <div>© <span id="year"></span> <span id="footerName">Seu Site</span>. Todos os direitos reservados.</div>
+      <div class="small muted">Feito com tema roxo e preto.</div>
+    </footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="shared.js"></script>
+  <script src="site.js"></script>
+</body>
+</html>
+
+# Site Roxo & Preto (Vitrine de Apps)
+
+## Como usar (rápido)
+1. Abra **index.html** para ver o site.
+2. Abra **admin.html** para editar:
+   - Logo
+   - Nome do site
+   - Textos
+   - Cores
+   - Apps/Produtos (nome, preço, link do app, modo WhatsApp/Checkout)
+
+Tudo fica salvo no navegador (localStorage).  
+Se você abrir em outro computador/navegador, terá que configurar novamente ou usar Exportar/Importar JSON.
+
+## Publicar (hosting)
+- GitHub Pages, Netlify, Vercel (Static), Hostinger, etc.
+- É só subir esses arquivos.
+
+## Venda do link do app
+- Modo **WhatsApp**: o botão Compra abre uma mensagem para você com o produto e o link do app (para você enviar depois).
+- Modo **Checkout**: o botão abre um link de pagamento (Mercado Pago/Hotmart/Gumroad etc.).
+
+Para entrega automática do link, você precisa de um checkout com entrega digital ou um backend.
+
+// shared.js — funções comuns (config, tema, toast)
+const STORAGE_KEY = "purpleBlackSiteConfig_v1";
+
+const DEFAULT_CONFIG = {
+  branding: {
+    siteName: "Seu Site",
+    siteTag: "Vitrine de apps",
+    heroTitle: "Seu espaço roxo & preto",
+    heroSubtitle: "Coloque seus apps aqui e venda enviando o link depois do pagamento (via WhatsApp ou checkout).",
+    appsIntro: "Clique em comprar para ir pro checkout ou abrir WhatsApp.",
+    aboutText: "Escreva aqui sobre você, sua equipe, seus produtos e como funciona a entrega do link do app.",
+    contactText: "Quer comprar ou tirar dúvida? Me chama no WhatsApp.",
+    logoDataUrl: "" // será preenchido quando você enviar uma imagem
+  },
+  theme: {
+    primary: "#8b5cf6",
+    accent: "#ec4899",
+    bg: "#07040f",
+    text: "#f3f4f6"
+  },
+  contact: {
+    whatsappNumber: "55", // coloque seu número com DDI, ex.: 5591999999999
+    whatsappMsg: "Olá! Tenho interesse em um app do seu site.",
+    instagramUrl: "https://instagram.com/",
+    youtubeUrl: "https://youtube.com/"
+  },
+  products: [
+    {
+      id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+      name: "Meu App Premium",
+      desc: "Um app incrível com recursos especiais. Edite essa descrição no Admin.",
+      price: "19.90",
+      appLink: "https://seu-link-do-app-aqui.com",
+      mode: "whatsapp", // "whatsapp" | "checkout"
+      checkout: "",
+      buttonText: "Comprar"
+    },
+    {
+      id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()+1),
+      name: "Meu App Pro",
+      desc: "Outra opção para vender. Você pode colocar checkout direto.",
+      price: "49.90",
+      appLink: "https://seu-link-do-app-pro-aqui.com",
+      mode: "checkout",
+      checkout: "https://seu-checkout.com/produto",
+      buttonText: "Comprar no checkout"
+    }
+  ],
+  admin: {
+    passwordHash: "" // opcional (hash simples)
+  }
+};
+
+// Hash simples (não é segurança forte — serve só pra bloqueio básico).
+async function sha256(text){
+  const enc = new TextEncoder().encode(text);
+  const buf = await crypto.subtle.digest("SHA-256", enc);
+  const arr = Array.from(new Uint8Array(buf));
+  return arr.map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+function loadConfig(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return structuredClone(DEFAULT_CONFIG);
+    const parsed = JSON.parse(raw);
+    // Mescla com defaults para não quebrar se faltar campo
+    return deepMerge(structuredClone(DEFAULT_CONFIG), parsed);
+  }catch{
+    return structuredClone(DEFAULT_CONFIG);
+  }
+}
+
+function saveConfig(cfg){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg));
+}
+
+function resetConfig(){
+  localStorage.removeItem(STORAGE_KEY);
+}
+
+function deepMerge(target, source){
+  if(typeof target !== "object" || target === null) return source;
+  if(typeof source !== "object" || source === null) return source;
+  for(const key of Object.keys(source)){
+    if(Array.isArray(source[key])){
+      target[key] = source[key];
+    }else if(typeof source[key] === "object" && source[key] !== null){
+      target[key] = deepMerge(target[key] ?? {}, source[key]);
+    }else{
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
+
+function applyTheme(cfg){
+  const r = document.documentElement;
+  r.style.setProperty("--primary", cfg.theme.primary);
+  r.style.setProperty("--accent", cfg.theme.accent);
+  r.style.setProperty("--bg", cfg.theme.bg);
+  r.style.setProperty("--text", cfg.theme.text);
+
+  // Ajusta tons auxiliares (bg2, muted) com base no bg
+  // Simples: usa um fundo ligeiramente mais claro para criar profundidade.
+  r.style.setProperty("--bg2", shade(cfg.theme.bg, 12));
+  r.style.setProperty("--muted", "rgba(243,244,246,.72)");
+}
+
+function shade(hex, amt){
+  // hex "#rrggbb" -> clareia/escurece com amt (-100..100)
+  const h = hex.replace("#","").trim();
+  if(h.length !== 6) return hex;
+  const num = parseInt(h, 16);
+  let r = (num >> 16) & 255;
+  let g = (num >> 8) & 255;
+  let b = num & 255;
+  const clamp = v => Math.max(0, Math.min(255, v));
+  r = clamp(r + amt);
+  g = clamp(g + amt);
+  b = clamp(b + amt);
+  return "#" + [r,g,b].map(v => v.toString(16).padStart(2,"0")).join("");
+}
+
+function setBrandHeader(cfg){
+  const logo = document.getElementById("brandLogo");
+  const name = document.getElementById("brandName");
+  const tag = document.getElementById("brandTag");
+
+  if(logo){
+    if(cfg.branding.logoDataUrl){
+      logo.src = cfg.branding.logoDataUrl;
+      logo.style.visibility = "visible";
+    }else{
+      // deixa com gradiente default, sem src
+      logo.removeAttribute("src");
+      logo.style.visibility = "visible";
+    }
+  }
+  if(name) name.textContent = cfg.branding.siteName;
+  if(tag) tag.textContent = cfg.branding.siteTag;
+}
+
+function toast(msg){
+  const t = document.getElementById("toast");
+  if(!t) return;
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(()=> t.classList.remove("show"), 2600);
+}
+
+function formatBRL(priceStr){
+  const n = Number(String(priceStr).replace(",", "."));
+  if(!isFinite(n)) return "";
+  return n.toLocaleString("pt-BR", { style:"currency", currency:"BRL" });
+}
+
+function waLink(number, message){
+  const clean = String(number || "").replace(/\D/g, "");
+  const msg = encodeURIComponent(message || "");
+  // wa.me funciona com número completo: 55DDDNUMERO
+  return `https://wa.me/${clean}?text=${msg}`;
+}
+
+// site.js — renderiza o site (index.html)
+(function(){
+  const cfg = loadConfig();
+  applyTheme(cfg);
+  setBrandHeader(cfg);
+
+  document.title = cfg.branding.siteName;
+  const setText = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+  const setHtml = (id, val) => { const el = document.getElementById(id); if(el) el.innerHTML = val; };
+
+  setText("heroTitle", cfg.branding.heroTitle);
+  setText("heroSubtitle", cfg.branding.heroSubtitle);
+  setText("appsIntro", cfg.branding.appsIntro);
+  setText("aboutText", cfg.branding.aboutText);
+  setText("contactText", cfg.branding.contactText);
+  setText("footerName", cfg.branding.siteName);
+  setText("year", String(new Date().getFullYear()));
+
+  // contato
+  const whatsBtn = document.getElementById("whatsBtn");
+  const igBtn = document.getElementById("igBtn");
+  const ytBtn = document.getElementById("ytBtn");
+  const contactFoot = document.getElementById("contactFoot");
+
+  if(whatsBtn){
+    const link = waLink(cfg.contact.whatsappNumber, cfg.contact.whatsappMsg);
+    whatsBtn.href = link;
+  }
+  if(igBtn) igBtn.href = cfg.contact.instagramUrl || "#";
+  if(ytBtn) ytBtn.href = cfg.contact.youtubeUrl || "#";
+  if(contactFoot){
+    const n = String(cfg.contact.whatsappNumber || "").replace(/\D/g, "");
+    contactFoot.textContent = n && n !== "55" ? `WhatsApp: +${n}` : "Configure seu WhatsApp no Admin.";
+  }
+
+  // produtos
+  const grid = document.getElementById("appsGrid");
+  if(grid){
+    grid.innerHTML = "";
+    const products = Array.isArray(cfg.products) ? cfg.products : [];
+    if(products.length === 0){
+      grid.innerHTML = `<div class="panel"><b>Nenhum app cadastrado.</b><div class="small muted">Abra o Admin e adicione seus apps.</div></div>`;
+    }else{
+      for(const p of products){
+        grid.appendChild(renderProductCard(p, cfg));
+      }
+    }
+  }
+
+  function renderProductCard(p, cfg){
+    const card = document.createElement("article");
+    card.className = "product";
+
+    const price = p.price ? formatBRL(p.price) : "";
+    const modeLabel = p.mode === "checkout" ? "Checkout" : "WhatsApp";
+
+    card.innerHTML = `
+      <div class="product__top">
+        <div>
+          <div class="product__name">${escapeHtml(p.name || "App")}</div>
+          <div class="kicker">Modo: ${modeLabel}</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="price">${price || ""}</div>
+          <div class="kicker">${price ? "Pagamento" : ""}</div>
+        </div>
+      </div>
+      <p class="product__desc">${escapeHtml(p.desc || "")}</p>
+      <div class="product__actions">
+        <button class="btn btn--primary btn--tiny" type="button">${escapeHtml(p.buttonText || "Comprar")}</button>
+        ${p.appLink ? `<a class="btn btn--ghost btn--tiny" href="${escapeAttr(p.appLink)}" target="_blank" rel="noopener">Ver link</a>` : ""}
+      </div>
+    `;
+
+    const buyBtn = card.querySelector("button");
+    buyBtn.addEventListener("click", ()=> handleBuy(p, cfg));
+    return card;
+  }
+
+  function handleBuy(p, cfg){
+    const name = p.name || "App";
+    const price = p.price ? formatBRL(p.price) : "";
+    const appLink = (p.appLink || "").trim();
+
+    if(p.mode === "checkout" && p.checkout){
+      window.open(p.checkout, "_blank", "noopener");
+      toast("Abrindo checkout…");
+      return;
+    }
+
+    // padrão: WhatsApp para você vender e depois enviar o link
+    const msg =
+      `${cfg.contact.whatsappMsg}\n\n` +
+      `Produto: ${name}${price ? ` (${price})` : ""}\n` +
+      (appLink ? `Link do app (para envio): ${appLink}\n` : "") +
+      `\nQuero comprar. Como faço o pagamento?`;
+
+    const link = waLink(cfg.contact.whatsappNumber, msg);
+    window.open(link, "_blank", "noopener");
+    toast("Abrindo WhatsApp…");
+  }
+
+  // util simples contra HTML injection
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function escapeAttr(s){
+    return String(s).replace(/"/g, "&quot;");
+  }
+})();
+
+/* =========
+   Tema Roxo & Preto — Estilo moderno com neon
+   ========= */
+
+:root{
+  --bg: #07040f;
+  --bg2: #0b0620;
+  --card: rgba(255,255,255,.06);
+  --card2: rgba(255,255,255,.08);
+  --border: rgba(255,255,255,.12);
+  --text: #f3f4f6;
+  --muted: rgba(243,244,246,.72);
+  --primary: #8b5cf6; /* roxo */
+  --accent: #ec4899;  /* neon rosa */
+  --shadow: 0 18px 60px rgba(0,0,0,.55);
+  --radius: 18px;
+  --radius2: 24px;
+  --max: 1060px;
+}
+
+*{ box-sizing: border-box; }
+html, body{ height:100%; }
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial;
+  color: var(--text);
+  background: radial-gradient(1000px 600px at 15% 10%, rgba(139,92,246,.22), transparent 55%),
+              radial-gradient(800px 500px at 85% 25%, rgba(236,72,153,.18), transparent 60%),
+              linear-gradient(180deg, var(--bg), var(--bg2));
+  overflow-x:hidden;
+}
+
+.bg-glow{
+  position: fixed;
+  inset: -60px -60px auto -60px;
+  height: 220px;
+  background: radial-gradient(closest-side, rgba(139,92,246,.38), transparent 70%);
+  filter: blur(18px);
+  pointer-events:none;
+  opacity: .9;
+}
+
+a{ color: inherit; text-decoration: none; }
+.container{ width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+
+.topbar{
+  position: sticky; top: 0;
+  backdrop-filter: blur(14px);
+  background: linear-gradient(180deg, rgba(7,4,15,.86), rgba(7,4,15,.55));
+  border-bottom: 1px solid var(--border);
+  z-index: 50;
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 14px 20px;
+}
+
+.brand{ display:flex; gap:12px; align-items:center; min-width: 200px; }
+.brand__logo{
+  width:42px; height:42px; border-radius: 14px;
+  background: linear-gradient(135deg, rgba(139,92,246,.35), rgba(236,72,153,.25));
+  border: 1px solid rgba(255,255,255,.14);
+  object-fit: cover;
+}
+.brand__name{ font-weight: 820; letter-spacing: .2px; }
+.brand__tag{ font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+.nav{ display:flex; gap:16px; align-items:center; }
+.nav a{ font-size: 14px; color: rgba(243,244,246,.92); padding: 10px 10px; border-radius: 14px; }
+.nav a:hover{ background: rgba(255,255,255,.06); }
+
+.chip{
+  background: linear-gradient(135deg, rgba(139,92,246,.28), rgba(236,72,153,.20));
+  border: 1px solid rgba(255,255,255,.14);
+  padding: 9px 12px;
+  border-radius: 999px;
+  box-shadow: 0 10px 40px rgba(0,0,0,.35);
+}
+
+.hero{ padding: 56px 0 22px; display:grid; gap: 26px; grid-template-columns: 1.2fr .8fr; align-items: center; }
+.hero h1{
+  margin: 0 0 12px 0;
+  font-size: clamp(28px, 3.4vw, 44px);
+  letter-spacing: -.5px;
+  line-height: 1.05;
+}
+.hero__copy{ padding-right: 14px; }
+.muted{ color: var(--muted); }
+.small{ font-size: 12px; }
+.hero__cta{ display:flex; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.14);
+  font-weight: 720;
+  letter-spacing: .2px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.35);
+  transition: transform .08s ease, background .15s ease, border-color .15s ease;
+  cursor:pointer;
+}
+.btn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.22); }
+.btn--primary{
+  background: linear-gradient(135deg, rgba(139,92,246,.92), rgba(236,72,153,.62));
+}
+.btn--ghost{
+  background: rgba(255,255,255,.05);
+}
+
+.badge{
+  display:inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  color: rgba(243,244,246,.88);
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.04);
+}
+
+.hero__badges{ margin-top: 16px; display:flex; gap: 8px; flex-wrap: wrap; }
+
+.card{
+  border-radius: var(--radius2);
+  border: 1px solid rgba(255,255,255,.14);
+  box-shadow: var(--shadow);
+}
+.card--glass{
+  background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+  backdrop-filter: blur(10px);
+}
+.card__header{
+  display:flex; gap: 8px;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+}
+.dot{ width: 10px; height:10px; border-radius: 50%; opacity:.8; }
+.dot--1{ background: rgba(236,72,153,.9); }
+.dot--2{ background: rgba(139,92,246,.9); }
+.dot--3{ background: rgba(255,255,255,.35); }
+.card__body{ padding: 16px; }
+.card__title{ margin: 0 0 8px 0; }
+.card__body p{ margin: 0 0 10px 0; }
+
+.section{ padding: 34px 0; }
+.section__head h2{ margin: 0 0 8px 0; }
+.section__head p{ margin: 0; }
+
+.grid{
+  margin-top: 18px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.product{
+  background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: var(--radius2);
+  padding: 14px;
+  box-shadow: 0 18px 55px rgba(0,0,0,.35);
+}
+.product__top{ display:flex; align-items:flex-start; justify-content:space-between; gap: 12px; }
+.product__name{ font-weight: 860; letter-spacing: .1px; }
+.product__desc{ margin: 8px 0 12px 0; color: rgba(243,244,246,.75); line-height: 1.45; font-size: 14px; }
+.price{ font-weight: 900; }
+.kicker{ font-size: 12px; color: rgba(243,244,246,.70); margin-top: 2px; }
+
+.product__actions{ display:flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+.btn--tiny{ padding: 10px 12px; border-radius: 14px; box-shadow: none; }
+
+.panel{
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: var(--radius2);
+  padding: 18px;
+}
+.split{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+
+.list{ margin: 10px 0 0; padding-left: 18px; }
+.list li{ margin: 7px 0; color: rgba(243,244,246,.82); }
+
+.contact{ display:flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+.footer{
+  padding: 30px 0 60px;
+  display:flex;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid rgba(255,255,255,.12);
+  margin-top: 26px;
+}
+
+.toast{
+  position: fixed;
+  bottom: 18px; left: 50%;
+  transform: translateX(-50%);
+  background: rgba(10,7,22,.88);
+  border: 1px solid rgba(255,255,255,.14);
+  padding: 12px 14px;
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  max-width: min(680px, calc(100% - 24px));
+  opacity: 0;
+  pointer-events:none;
+  transition: opacity .15s ease, transform .15s ease;
+}
+.toast.show{ opacity: 1; transform: translateX(-50%) translateY(-2px); }
+
+/* =========
+   Admin
+   ========= */
+body.admin .hero{ display:none; }
+.form{ display:grid; gap: 10px; margin-top: 10px; }
+label{ display:grid; gap: 6px; font-size: 13px; color: rgba(243,244,246,.86); }
+input, textarea, select{
+  width: 100%;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+  outline: none;
+}
+input:focus, textarea:focus, select:focus{ border-color: rgba(139,92,246,.7); box-shadow: 0 0 0 3px rgba(139,92,246,.18); }
+
+.row{ display:flex; justify-content:space-between; gap: 14px; align-items:center; }
+.row--actions{ margin-top: 14px; flex-wrap: wrap; }
+.logoRow{ display:flex; gap: 14px; align-items:center; flex-wrap: wrap; }
+.logoPreview{
+  width: 82px; height: 82px; border-radius: 18px;
+  background: rgba(255,255,255,.05);
+  border: 1px dashed rgba(255,255,255,.18);
+  object-fit: cover;
+}
+.fileBtn{ position:relative; overflow:hidden; }
+
+.tableWrap{ overflow:auto; margin-top: 12px; }
+.table{ width: 100%; border-collapse: collapse; min-width: 720px; }
+.table th, .table td{
+  text-align:left;
+  padding: 12px 10px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  font-size: 13px;
+}
+.table th{ color: rgba(243,244,246,.85); font-weight: 800; }
+.table td{ color: rgba(243,244,246,.82); }
+.actions{ display:flex; gap: 8px; justify-content:flex-end; }
+.iconBtn{
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.05);
+  cursor:pointer;
+}
+.iconBtn:hover{ background: rgba(255,255,255,.08); }
+
+/* Dialog */
+.dialog::backdrop{ background: rgba(0,0,0,.55); }
+.dialog{
+  border: none;
+  padding: 0;
+  background: transparent;
+}
+.dialog__card{
+  width: min(680px, calc(100vw - 26px));
+  margin: auto;
+  border-radius: var(--radius2);
+  border: 1px solid rgba(255,255,255,.14);
+  background: linear-gradient(180deg, rgba(18,12,36,.96), rgba(10,7,22,.92));
+  box-shadow: var(--shadow);
+  padding: 18px;
+}
+
+/* Responsive */
+@media (max-width: 900px){
+  .hero{ grid-template-columns: 1fr; }
+  .hero__copy{ padding-right: 0; }
+  .grid{ grid-template-columns: 1fr 1fr; }
+  .split{ grid-template-columns: 1fr; }
+  .footer{ flex-direction: column; }
+}
+
+@media (max-width: 560px){
+  .nav{ gap: 6px; }
+  .nav a{ padding: 10px 8px; }
+  .grid{ grid-template-columns: 1fr; }
+}
